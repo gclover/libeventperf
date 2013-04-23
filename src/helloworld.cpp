@@ -6,6 +6,7 @@
   Where possible, it exits cleanly in response to a SIGINT (ctrl-c).
 */
 
+extern "C" {
 
 #include <string.h>
 #include <errno.h>
@@ -18,6 +19,7 @@
 #include <event2/util.h>
 #include <event2/event.h>
 
+}
 
 static const char MESSAGE[] = "Hello, World!\n";
 
@@ -83,7 +85,7 @@ static void
 listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
     struct sockaddr *sa, int socklen, void *user_data)
 {
-	struct event_base *base = user_data;
+	struct event_base *base = (struct event_base*)user_data;
 	struct bufferevent *bev;
 
 	bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
@@ -126,7 +128,7 @@ conn_eventcb(struct bufferevent *bev, short events, void *user_data)
 static void
 signal_cb(evutil_socket_t sig, short events, void *user_data)
 {
-	struct event_base *base = user_data;
+	struct event_base *base = (struct event_base*)user_data;
 	struct timeval delay = { 2, 0 };
 
 	printf("Caught an interrupt signal; exiting cleanly in two seconds.\n");
