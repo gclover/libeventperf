@@ -1,0 +1,9 @@
+import os
+import glob
+
+CLIB_HOME = os.environ['CLIB_HOME']
+
+cpppath = CLIB_HOME + '/include'
+libpath = CLIB_HOME + '/lib'
+
+Program('target/perf', glob.glob('src/*.c'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event'], CCFLAGS = [])
