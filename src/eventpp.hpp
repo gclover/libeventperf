@@ -1,5 +1,5 @@
-#ifndef _EVENTXX_HPP_
-#define _EVENTXX_HPP_
+#ifndef _EVENTPP_HPP_
+#define _EVENTPP_HPP_
 
 #include <sys/types.h> // timeval
 #include <stdexcept>   // std::exception, std::invalid_argument,
@@ -574,7 +574,7 @@ struct dispatcher
 		internal::event_base_priority_init(_event_base, npriorities);
 	}
 
-#ifndef EVENTXX_NO_EVENT_BASE_FREE
+#ifndef EVENTPP_NO_EVENT_BASE_FREE
 	/// Free dispatcher resources, see @ref Status section for details.
 	~dispatcher() throw() { event_base_free(_event_base); }
 #endif
@@ -800,6 +800,6 @@ struct dispatcher
 
 } // namespace eventxx
 
-#endif // _EVENTXX_HPP_
+#endif // _EVENTPP_HPP_
 
 // vim: set filetype=cpp :

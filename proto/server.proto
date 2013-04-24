@@ -1,0 +1,9 @@
+package server;
+
+message EchoRequest {
+	required string key = 1;
+}
+
+message EchoResponse {
+	required string value = 1;
+}

@@ -8,3 +8,4 @@ libpath = CLIB_HOME + '/lib'
 
 Program('target/helloworld', glob.glob('src/helloworld.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
 Program('target/sharedptr', glob.glob('src/sharedptr.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+Program('target/server', glob.glob('src/server.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])

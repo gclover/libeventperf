@@ -21,6 +21,8 @@ extern "C" {
 
 }
 
+#include <iostream>
+
 static const char MESSAGE[] = "Hello, World!\n";
 
 static const int PORT = 9995;
@@ -66,7 +68,11 @@ main(int argc, char **argv)
 		return 1;
 	}
 
+	std::cout << "1" << std::endl;
+
 	event_base_dispatch(base);
+
+	std::cout << "2" << std::endl;
 
 	evconnlistener_free(listener);
 	event_free(signal_event);
