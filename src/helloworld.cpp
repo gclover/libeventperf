@@ -25,8 +25,7 @@ static const char MESSAGE[] = "Hello, World!\n";
 
 static const int PORT = 9995;
 
-static void listener_cb(struct evconnlistener *, evutil_socket_t,
-    struct sockaddr *, int socklen, void *);
+static void listener_cb(struct evconnlistener *, evutil_socket_t, struct sockaddr *, int socklen, void *);
 static void conn_writecb(struct bufferevent *, void *);
 static void conn_eventcb(struct bufferevent *, short, void *);
 static void signal_cb(evutil_socket_t, short, void *);
@@ -39,10 +38,6 @@ main(int argc, char **argv)
 	struct event *signal_event;
 
 	struct sockaddr_in sin;
-#ifdef WIN32
-	WSADATA wsa_data;
-	WSAStartup(0x0201, &wsa_data);
-#endif
 
 	base = event_base_new();
 	if (!base) {

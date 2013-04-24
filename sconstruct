@@ -6,5 +6,5 @@ CLIB_HOME = os.environ['CLIB_HOME']
 cpppath = CLIB_HOME + '/include'
 libpath = CLIB_HOME + '/lib'
 
-Program('target/helloworld', glob.glob('src/helloworld.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event'], CCFLAGS = [])
-Program('target/sharedptr', glob.glob('src/sharedptr.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event'], CCFLAGS = [])
+Program('target/helloworld', glob.glob('src/helloworld.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+Program('target/sharedptr', glob.glob('src/sharedptr.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
