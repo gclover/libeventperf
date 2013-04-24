@@ -1,5 +1,5 @@
-#ifndef _EVENTPP_HPP_
-#define _EVENTPP_HPP_
+#ifndef _EVENTCPP_H_
+#define _EVENTCPP_H_
 
 #include <sys/types.h> // timeval
 #include <stdexcept>   // std::exception, std::invalid_argument,
@@ -8,7 +8,7 @@
 /**
  * Namespace for all symbols libevent C++ wrapper defines.
  */
-namespace eventpp
+namespace eventcpp
 {
 
 
@@ -21,7 +21,7 @@ namespace internal
 
 /** @defgroup exceptions Exceptions
  *
- * eventpp makes a heavy use of exceptions. Each function has it's exceptions
+ * eventcpp makes a heavy use of exceptions. Each function has it's exceptions
  * specified, so it's very easy to find out what exceptions to expect.
  *
  * Exceptions are mostly thrown when there is a programming error. So if you get
@@ -153,18 +153,18 @@ struct time: ::timeval
 /** @defgroup events Events
  *
  * There are many ways to specify how to handle an event. You can use use the
- * same plain functions callbacks (see eventpp::cevent, eventpp::ctimer and
- * eventpp::csignal) like in C or the other kind of more advanced, stateful
- * function objects (see eventpp::event, eventpp::timer and eventpp::signal
+ * same plain functions callbacks (see eventcpp::cevent, eventcpp::ctimer and
+ * eventcpp::csignal) like in C or the other kind of more advanced, stateful
+ * function objects (see eventcpp::event, eventcpp::timer and eventcpp::signal
  * templates). The former are just typedef'ed specialization of the later.
  *
- * A member function wrapper functor (eventpp::mem_cb) is also included,
+ * A member function wrapper functor (eventcpp::mem_cb) is also included,
  * so you can use any member function (method) as an event handler.
  *
  * Please note that C-like function callback take a short as the type of event,
- * while functors (or member functions) use eventpp::type.
+ * while functors (or member functions) use eventcpp::type.
  *
- * All events derive from a plain class (not template) eventpp::basic_event, one
+ * All events derive from a plain class (not template) eventcpp::basic_event, one
  * of the main utilities of it (besides containing common code ;) is to be used
  * in STL containers.
  *
@@ -180,12 +180,12 @@ typedef void (*ccallback_type)(int, short, void*);
 /**
  * Type of events.
  *
- * There are 4 kind of events: eventpp::TIMEOUT, eventpp::READ, eventpp::WRITE
- * or eventpp::SIGNAL. eventpp::PERSIST is not an event, is an event modifier
- * flag, that tells eventpp that this event should live until dispatcher::del()
+ * There are 4 kind of events: eventcpp::TIMEOUT, eventcpp::READ, eventcpp::WRITE
+ * or eventcpp::SIGNAL. eventcpp::PERSIST is not an event, is an event modifier
+ * flag, that tells eventcpp that this event should live until dispatcher::del()
  * is called. You can use, for example:
  * @code
- * eventpp::event(fd, eventpp::READ | eventpp::PERSIST, ...);
+ * eventcpp::event(fd, eventcpp::READ | eventcpp::PERSIST, ...);
  * @endcode
  */
 enum type
@@ -211,7 +211,7 @@ type operator| (const type& t1, const type& t2)
  * All events derive from this class, so it's useful for use in containers,
  * like:
  * @code
- * std::list< eventpp::basic_event* > events;
+ * std::list< eventcpp::basic_event* > events;
  * @endcode
  */
 struct basic_event: internal::event
@@ -291,10 +291,10 @@ struct basic_event: internal::event
  * an integer (the file descriptor of the fired event) and an event::type (the
  * type of event being fired).
  * There is a specialized version of this class which takes as the template
- * parameter a C function with the eventpp::ccallback_type signature, just like
+ * parameter a C function with the eventcpp::ccallback_type signature, just like
  * C @libevent API does.
  *
- * @see eventpp::event< ccallback_type >
+ * @see eventcpp::event< ccallback_type >
  */
 template < typename F >
 struct event: basic_event
@@ -304,7 +304,7 @@ struct event: basic_event
 	 * Creates a new event.
 	 *
 	 * @param fd File descriptor to monitor for events.
-	 * @param ev Type of events to monitor (see eventpp::type).
+	 * @param ev Type of events to monitor (see eventcpp::type).
 	 * @param handler Callback functor.
 	 */
 	event(int fd, type ev, F& handler) throw()
@@ -327,9 +327,9 @@ struct event: basic_event
 
 
 /**
- * This is the specialization of eventpp::event for C-style callbacks.
+ * This is the specialization of eventcpp::event for C-style callbacks.
  *
- * @see eventpp::event
+ * @see eventcpp::event
  */
 template <>
 struct event< ccallback_type >: basic_event
@@ -339,7 +339,7 @@ struct event< ccallback_type >: basic_event
 	 * Creates a new event.
 	 *
 	 * @param fd File descriptor to monitor for events.
-	 * @param ev Type of events to monitor (see eventpp::type).
+	 * @param ev Type of events to monitor (see eventcpp::type).
 	 * @param handler C-style callback function.
 	 * @param arg Arbitrary pointer to pass to the handler as argument.
 	 */
@@ -363,7 +363,7 @@ struct event< ccallback_type >: basic_event
  * event(-1, 0, handler);
  * @endcode
  *
- * @note This event can't eventpp::PERSIST.
+ * @note This event can't eventcpp::PERSIST.
  * @see timer< ccallback_type >
  */
 template < typename F >
@@ -385,9 +385,9 @@ struct timer: event< F >
 
 
 /**
- * This is the specialization of eventpp::timer for C-style callbacks.
+ * This is the specialization of eventcpp::timer for C-style callbacks.
  *
- * @note This event can't eventpp::PERSIST.
+ * @note This event can't eventcpp::PERSIST.
  * @see timer
  */
 template <>
@@ -414,10 +414,10 @@ struct timer< ccallback_type >: event< ccallback_type >
  * This is just a special case of event that is fired when a signal is raised
  * (instead of a file descriptor being active). It's just a shortcut to:
  * @code
- * event(signum, eventpp::SIGNAL, handler);
+ * event(signum, eventcpp::SIGNAL, handler);
  * @endcode
  *
- * @note This event always eventpp::PERSIST.
+ * @note This event always eventcpp::PERSIST.
  * @see signal< ccallback_type >
  */
 template < typename F >
@@ -450,9 +450,9 @@ struct signal: event< F >
 
 
 /**
- * This is the specialization of eventpp::signal for C-style callbacks.
+ * This is the specialization of eventcpp::signal for C-style callbacks.
  *
- * @note This event always eventpp::PERSIST.
+ * @note This event always eventcpp::PERSIST.
  * @see signal
  */
 template <>
@@ -485,13 +485,13 @@ struct signal< ccallback_type >: event< ccallback_type >
 
 
 /// Shortcut to C-style event.
-typedef eventpp::event< ccallback_type > cevent;
+typedef eventcpp::event< ccallback_type > cevent;
 
 /// Shortcut to C-style timer.
-typedef eventpp::timer< ccallback_type > ctimer;
+typedef eventcpp::timer< ccallback_type > ctimer;
 
 /// Shortcut to C-style signal handler.
-typedef eventpp::signal< ccallback_type > csignal;
+typedef eventcpp::signal< ccallback_type > csignal;
 
 /**
  * Helper functor to use an arbitrary member function as an event handler.
@@ -621,7 +621,7 @@ struct dispatcher
 	 * Adds a temporary event.
 	 *
 	 * Adds a temporary event, without the need of instantiating a new event
-	 * object. Events added this way can't eventpp::PERSIST.
+	 * object. Events added this way can't eventcpp::PERSIST.
 	 *
 	 * @param fd File descriptor to monitor for events.
 	 * @param ev Type of events to monitor.
@@ -639,7 +639,7 @@ struct dispatcher
 	 * Adds a temporary event to with a C-style callback.
 	 *
 	 * Adds a temporary event, without the need of instantiating a new event
-	 * object. Events added this way can't eventpp::PERSIST.
+	 * object. Events added this way can't eventcpp::PERSIST.
 	 *
 	 * @param fd File descriptor to monitor for events.
 	 * @param ev Type of events to monitor.
@@ -656,7 +656,7 @@ struct dispatcher
 	 * Adds a temporary event.
 	 *
 	 * Adds a temporary event, without the need of instantiating a new event
-	 * object. Events added this way can't eventpp::PERSIST.
+	 * object. Events added this way can't eventcpp::PERSIST.
 	 *
 	 * @param fd File descriptor to monitor for events.
 	 * @param ev Type of events to monitor.
@@ -677,7 +677,7 @@ struct dispatcher
 	 * Adds a temporary event with a C-style callback.
 	 *
 	 * Adds a temporary event, without the need of instantiating a new event
-	 * object. Events added this way can't eventpp::PERSIST.
+	 * object. Events added this way can't eventcpp::PERSIST.
 	 *
 	 * @param fd File descriptor to monitor for events.
 	 * @param ev Type of events to monitor.
@@ -749,14 +749,14 @@ struct dispatcher
 	 * - exit() was called.
 	 * - All events were del()eted.
 	 * - Another internal error.
-	 * - eventpp::ONCE flag was set.
-	 * - eventpp::NONBLOCK flag was set.
+	 * - eventcpp::ONCE flag was set.
+	 * - eventcpp::NONBLOCK flag was set.
 	 *
-	 * @param flags If eventpp::ONCE is specified, then just one event is
-	 *              processed, if eventpp::NONBLOCK is specified, then this
+	 * @param flags If eventcpp::ONCE is specified, then just one event is
+	 *              processed, if eventcpp::NONBLOCK is specified, then this
 	 *              function returns even if there are no pending events.
 	 *
-	 * @return 0 if eventpp::NONBLOCK or eventpp::ONCE is set, 1 if there
+	 * @return 0 if eventcpp::NONBLOCK or eventcpp::ONCE is set, 1 if there
 	 *         are no more events registered and EINTR if you use the
 	 *         @libevent's  @c event_gotsig and return -1 in your
 	 *         @c event_sigcb callback.
@@ -798,7 +798,7 @@ struct dispatcher
 
 }; // struct dispatcher
 
-} // namespace eventpp
+} // namespace eventcpp
 
 #endif // _EVENTPP_HPP_
 
