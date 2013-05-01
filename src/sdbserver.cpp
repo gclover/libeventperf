@@ -178,8 +178,8 @@ protected:
 			srvThread.start(srv);
 			srvThread.join();
 			waitForTerminationRequest();
-//			srv.stop();
-//			srvThread.join();
+			srv.stop();
+			srvThread.join();
 		}
 		return Application::EXIT_OK;
 	}
@@ -189,15 +189,7 @@ private:
 };
 
 
-int main(int argc, char** argv)
-{
-	int i[1024*1024] ;
-
-	char* j = new char[1024*1024*300];
-
-
-	printf("stack %p\n", &i[0]);
-	printf("heap %p\n", &j[0]);
+int main(int argc, char** argv) {
 	SdbApplication app;
 	return app.run(argc, argv);
 }
