@@ -1,7 +1,12 @@
 
 from gevent import socket
 
-conn = socket.create_connection(('localhost', 9995))
 
-print conn.recv(100)
+for i in range(100000):
+	conn = socket.create_connection(('localhost', 9980))
+
+
+	print conn.recv(100)
+
+	break
 

@@ -6,6 +6,9 @@ CLIB_HOME = os.environ['CLIB_HOME']
 cpppath = CLIB_HOME + '/include'
 libpath = CLIB_HOME + '/lib'
 
-Program('target/helloworld', glob.glob('src/helloworld.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
-Program('target/sharedptr', glob.glob('src/sharedptr.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
-Program('target/server', glob.glob('src/server.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+#Program('target/helloworld', glob.glob('src/helloworld.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+#Program('target/sharedptr', glob.glob('src/sharedptr.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+#Program('target/server', glob.glob('src/server.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoFoundation', 'event_core'], CCFLAGS = [])
+Program('target/sdbserver', glob.glob('src/sdbserver.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoUtild', 'PocoXMLd', 'PocoFoundationd', 'event_core', 'pthread', 'event_pthreads'], CCFLAGS = ['-g'])
+Program('target/threadmem', glob.glob('src/threadmem.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoUtild', 'PocoXMLd', 'PocoFoundationd', 'event_core', 'pthread', 'pthread', 'event_pthreads'], CCFLAGS = ['-g'])
+Program('target/no', glob.glob('src/NotificationQueue.cpp'), CPPPATH = [cpppath], LIBPATH = [libpath], LIBS = ['PocoUtild', 'PocoXMLd', 'PocoFoundationd', 'event_core', 'pthread', 'pthread', 'event_pthreads'], CCFLAGS = ['-g'])

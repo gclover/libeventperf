@@ -8,7 +8,11 @@ using Poco::SharedPtr;
 
 int main(int argc, char* argv[])
 {
-	SharedPtr<std::string> p1(new std::string("hello world!"));
+
+	for (int i = 0; i < 1000000; ++i) {
+		SharedPtr<std::string> p1(new std::string("hello world!"));
+	}
+/*
 	SharedPtr<std::string> p2(p1);
 
 	p2 = 0;
@@ -16,5 +20,6 @@ int main(int argc, char* argv[])
 
 	std::string::size_type len = p1->length();
 	std::cout << *p1 << std::endl;
+*/
 	return 0;
 }
