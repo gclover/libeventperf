@@ -21,7 +21,11 @@ extern "C" {
 #include <Poco/Util/Option.h>
 #include <Poco/Util/OptionSet.h>
 #include <Poco/Util/HelpFormatter.h>
+#include <Poco/Logger.h>
+#include <Poco/SimpleFileChannel.h>
+#include <Poco/AutoPtr.h>
 #include <iostream>
+#include <sstream>
 
 
 using Poco::Thread;
@@ -31,6 +35,9 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
+using Poco::Logger;
+using Poco::SimpleFileChannel;
+using Poco::AutoPtr;
 
 class SdbServer : public Runnable {
 public:
@@ -48,8 +55,20 @@ public:
 		event_base_free(eventbase_);
 	}
 
+	void start() {
+		thread_.start(*this);
+
+	}
+
 	void run() {
 
+		Application& app = Application::instance();
+
+		for (int i = 0; i < 10000; i++) {
+			std::stringstream os;
+			os << "sdb started " << i;
+			app.logger().information(os.str());
+		}
 	
 		struct sockaddr_in sin = this->create_addr(port_);
 
@@ -68,6 +87,7 @@ public:
 	void stop() {
 		struct timeval delay = { 0, 0 };
 		event_base_loopexit(eventbase_, &delay);
+		thread_.join();
 		std::cout << "stop exit" << std::endl;
 	}
 
@@ -122,6 +142,8 @@ private:
 	struct evconnlistener *listener_;
 	struct event_base *eventbase_ ;
 	int port_;
+
+	Poco::Thread thread_;
 };
 
 
@@ -173,13 +195,27 @@ protected:
 		} else {
 			int port = (int)config().getInt("sdbserver.port", 9980);
 
-			SdbServer srv(port);
-			Thread srvThread; 
-			srvThread.start(srv);
-			srvThread.join();
+			AutoPtr<SimpleFileChannel> sChannel(new SimpleFileChannel());
+			sChannel->setProperty("path", "loglog");
+			//sChannel->setProperty("rotation", "100 M");
+			//Logger::root().setChannel(sChannel);
+
+			logger().setChannel(sChannel);
+			//Logger& logger = Logger::get("hellolog");
+			//std::cout << "start log" << std::endl;
+			//for (int i = 0; i < 10; ++i)
+			//	logger.information("hsssssssssssssssssssss");
+
+			SdbServer srv(9980);
+			SdbServer srv1(9981);
+			SdbServer srv2(9982);
+			srv.start();
+			srv1.start();
+			srv2.start();
 			waitForTerminationRequest();
 			srv.stop();
-			srvThread.join();
+			srv1.stop();
+			srv2.stop();
 		}
 		return Application::EXIT_OK;
 	}
@@ -190,6 +226,7 @@ private:
 
 
 int main(int argc, char** argv) {
+
 	SdbApplication app;
 	return app.run(argc, argv);
 }

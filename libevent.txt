@@ -1,0 +1,60 @@
+
+
+event_base
+event_config
+
+event_base_new()|event_base_free()
+event_base_new_with_config()
+event_config_new()|event_config_free()
+
+
+event_config_set_flag()
+
+EVENT_BASE_FLAG_NOLOCK
+EVENT_BASE_FLAG_IGNORE_EVENT
+EVENT_BASE_FLAG_NO_CACHE_TIME
+EVENT_BASE_FLAG__EPOLL_USE_CHANGELIST
+
+event_base_priority_init() // set event_base priority
+
+
+EVLOOP_ONCE  0x01
+EVLOOP_NOBLOCK 0x02
+
+event_base_loop(event_base, flags)
+event_base_dispatch() // run until invoke event_base_loop_break
+                      //   or event_base_loopexit
+
+
+event_base_loopexit(base, time) // will complete current event action
+event_baes_loopbreak(base)
+
+event_base_gettimeofday_cached(base, timeval); // get cache time
+evutil_gettimeofday()   // get current time
+
+event_base_dump_events
+
+
+
+event_new()
+event_add()
+event_del()
+
+
+EV_READ
+EV_WRITE
+EV_SIGNAL
+EV_PERSIST
+EV_ET
+
+evtimer_new
+evtimer_add
+evtimer_del
+evtimer_pending
+
+evsignal_new
+signal_add
+signal_del
+
+
+
